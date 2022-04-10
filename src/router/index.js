@@ -14,11 +14,6 @@ const routes = [
         name: 'home',
         component: Home,
       },
-      {
-        path: 'your-gift',
-        name: 'YourGift',
-        component: () => import('@/views/YourGiftView.vue'),
-      },
     ],
   },
 ];

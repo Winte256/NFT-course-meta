@@ -1,15 +1,17 @@
 $colorFiller = #fff;
 $colorBg = radial-gradient(135.69% 54.68% at 126.27% 45.32%, #BF36FF 0%, #170928 100%);
 $colorBtn = #170A29;
-$colorAccent = #DBF851;
-$colorPurple = #3B2CAB;
+$colorAccent = #FFD600;
+$colorPurple = #402E9E;
+$lightPurple = #D5BBFF;
+$dangerPurple = #FECBFF;
 
 $width = {
   phoneXs: {
-    buttonText: 300px,
+    buttonText: 280px,
   },
   phoneS: {
-    buttonText: 300px,
+    buttonText: 320px,
   }
 }
 
@@ -80,20 +82,20 @@ mediaGiant() {
 $fontSizes = {
   desktop: {
     h1: {
-      fontSize: 28px,
-      lineHeight: 32px,
+      fontSize: 17px,
+      lineHeight: 22px,
       },
     text: {
-      fontSize: 14px,
-      lineHeight: 20px,
+      fontSize: 10px,
+      lineHeight: 13px,
       },
     policies: {
-      fontSize: 12px,
-      lineHeight: 16px,
+      fontSize: 8px,
+      lineHeight: 10px,
       },
     button: {
-      fontSize: 18px,
-      lineHeight: 28px,
+      fontSize: 14px,
+      lineHeight: 18px,
       },
     contact: {
       fontSize: 16px,
@@ -102,20 +104,20 @@ $fontSizes = {
   },
   mobile: {
     h1: {
-      fontSize: 28px,
-      lineHeight: 32px,
+      fontSize: 17px,
+      lineHeight: 22px,
       },
     text: {
-      fontSize: 14px,
-      lineHeight: 20px,
+      fontSize: 10px,
+      lineHeight: 13px,
       },
     policies: {
-      fontSize: 12px,
-      lineHeight: 16px,
+      fontSize: 8px,
+      lineHeight: 10px,
       },
     button: {
-      fontSize: 18px,
-      lineHeight: 28px,
+      fontSize: 14px,
+      lineHeight: 18px,
       },
     contact: {
       fontSize: 16px,
@@ -136,7 +138,7 @@ getFont(name = 'text') {
 
 getFontH1() {
   getFont('h1');
-  font-weight: 600;
+  font-weight: 700;
 }
 
 getFontText() {

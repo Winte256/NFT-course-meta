@@ -1,10 +1,10 @@
 <template>
   <div class="title">
-    <div class="titleText">
-      <slot/>
-    </div>
     <div class="titleText titleText_yellow">
-    <slot name="yellow"/>
+      <slot name="yellow" />
+    </div>
+    <div class="titleText">
+      <slot />
     </div>
   </div>
 </template>
@@ -17,13 +17,14 @@ export default {
 
 <style lang="stylus" scoped>
 .title {
-  max-width: 280px;
-  text-align center
+  max-width: 480px;
 }
 
 .titleText {
-  getFontH1()
-  color: $colorFiller;
+  getFontH1();
+  color: $colorPurple;
+  text-transform: uppercase;
+
   &_yellow {
     color: $colorAccent;
   }

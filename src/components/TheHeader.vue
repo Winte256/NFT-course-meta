@@ -1,5 +1,4 @@
 <template>
-  <layout-header-locale-picker />
   <header class="header">
     <logo-component />
   </header>
@@ -7,13 +6,11 @@
 
 <script>
 import LogoComponent from '@/components/LogoComponent.vue';
-import LayoutHeaderLocalePicker from './LayoutHeaderLocalePicker.vue';
 
 export default {
   name: 'TheHeader',
   components: {
     LogoComponent,
-    LayoutHeaderLocalePicker,
   },
 };
 </script>
@@ -22,7 +19,6 @@ export default {
 .header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 20px 0 24px;
+  padding: 20px 0 5px;
 }
 </style>

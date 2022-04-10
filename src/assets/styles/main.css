@@ -1,41 +1,27 @@
 @font-face {
-  font-family: 'Raleway';
-  src: url('@/assets/fonts/Raleway-Light.ttf') format('truetype');
+  font-family: 'IBMPlexSans';
+  src: url('@/assets/fonts/IBMPlexSans-LightItalic.ttf') format('truetype');
   font-weight: 300;
-  font-style: normal;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: 'Raleway';
-  src: url('@/assets/fonts/Raleway-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Raleway';
-  src: url('@/assets/fonts/Raleway-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('@/assets/fonts/Montserrat-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('@/assets/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-family: 'IBMPlexSans';
+  src: url('@/assets/fonts/IBMPlexSans-Regular.ttf') format('truetype');
   font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  src: url('@/assets/fonts/IBMPlexSans-Bold.ttf') format('truetype');
+  font-weight: 700;
   font-style: normal;
 }
 
 
 * {
-  font-family: 'Raleway',
+  font-family: 'IBMPlexSans',
     sans-serif;
   box-sizing: border-box;
 }
