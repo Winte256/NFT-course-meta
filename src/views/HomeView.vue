@@ -19,10 +19,10 @@
       </p>
     </div>
 
-    <check-button v-if="1" />
-    <checking-button v-if="0" />
-    <have-nft-button :haveNft="3" v-if="0" />
-    <sorry-button v-if="0" />
+    <check-button v-if="amountState==='init'" @click="getAmount" />
+    <checking-button v-if="amountState === 'loading'" />
+    <have-nft-button :haveNft="amount" v-if="amountState === 'have'" @click="getAmount" />
+    <sorry-button v-if="amountState === 'error'" @click="getAmount" />
 
     <p class="text haveKey">
       Если вы уже получили NFT для доступа к курсу, вы можете проверить наличие
@@ -34,12 +34,14 @@
         type="text"
         :class="['input', { input_notIPhone: platform !== 'iPhone' }]"
         id="input"
+        v-model="address"
         placeholder="ВВЕДИТЕ адрес получателя в сети Binance Smart Chain (BEP20)"
       />
     </label>
 
-    <gift-button v-if="1" />
-    <sent-nft-button :leftNft="1" v-if="0" />
+    <gift-button v-if="sendState === 'init'" @click="sendNft"/>
+    <gift-load-button v-if="sendState === 'loading'" />
+    <sent-nft-button :leftNft="amount" v-if="sendState === 'success'" @click="sendNft"/>
 
     <p class="text sendNft">Отправьте NFT для доступа к курсу своим друзьям.</p>
 
@@ -86,9 +88,11 @@ import GiftButton from '@/components/GiftButton.vue';
 import SentNftButton from '@/components/SentNftButton.vue';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
-import { useRouter } from 'vue-router';
+import GiftLoadButton from '@/components/GiftLoadButton.vue';
+// import { useRouter } from 'vue-router';
 import {
-  sendGift, checkGift, setAwaitNFTCookie,
+
+  checkGift, sendGift,
 } from '../utils/metamask';
 
 export default {
@@ -100,69 +104,78 @@ export default {
     HaveNftButton,
     SorryButton,
     GiftButton,
+    GiftLoadButton,
     SentNftButton,
   },
 
   setup() {
-    const loading = ref(false);
+    // 'init' | 'loading' | 'have' | 'error'
+    const amountState = ref('init');
+    // 'init' | 'loading' | 'success' | 'error'
+    const sendState = ref('init');
+    const amount = ref(0);
+    const address = ref('');
     const toast = useToast();
-    const router = useRouter();
-    const { locale, t } = useI18n({ useScope: 'global' });
-
-    const goToNFTPage = () => {
-      loading.value = false;
-      toast(t('NFT уже получена'));
-      setAwaitNFTCookie(1);
-      router.push(`/${locale.value}/your-gift`);
-    };
-    const onError = (text = 'Что то пошло не так') => {
-      loading.value = false;
-      toast.error(t(text));
-    };
+    // const router = useRouter();
+    const { locale } = useI18n({ useScope: 'global' });
 
     const { platform } = window.navigator;
 
-    const getNFT = async () => {
-      if (loading.value) {
-        return;
-      }
-
-      loading.value = true;
-
-      const currentGift = await checkGift();
-
-      if (!currentGift) {
-        loading.value = false;
-        return;
-      }
-
-      if (currentGift !== '0') {
-        goToNFTPage();
-        return;
-      }
-
+    const getAmount = async () => {
+      amountState.value = 'loading';
       try {
-        await sendGift();
-      } catch (error) {
-        console.error(error);
-        onError('Неизвестная Ошибка при получении NFT');
-        return;
+        const result = await checkGift();
+
+        if (+result) {
+          amount.value = +result;
+          amountState.value = 'have';
+        } else {
+          amountState.value = 'error';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    const sendNft = async () => {
+      sendState.value = 'loading';
+      try {
+        const currentAmount = await checkGift();
+        amount.value = +currentAmount;
+
+        if (amount.value === 0) {
+          sendState.value = 'success';
+          return;
+        }
+
+        const result = await sendGift(address.value);
+        if (result) {
+          amount.value -= 1;
+
+          sendState.value = 'success';
+        } else {
+          sendState.value = 'init';
+        }
+      } catch (e) {
+        console.error(e);
+        sendState.value = 'init';
+        toast.error('Произошла ошибка. Попробуйте позже.');
       }
 
-      loading.value = false;
-
-      setAwaitNFTCookie(1);
-
-      router.push(`/${locale.value}/your-gift`);
+      address.value = '';
     };
 
     return {
       locale,
-
-      loading,
-      getNFT,
-
       platform,
+      address,
+
+      amount,
+      amountState,
+      sendState,
+
+      getAmount,
+      sendNft,
     };
   },
 };
