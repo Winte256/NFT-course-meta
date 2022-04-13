@@ -21,8 +21,8 @@
 
     <check-button v-if="amountState==='init'" @click="getAmount" />
     <checking-button v-if="amountState === 'loading'" />
-    <have-nft-button :haveNft="amount" v-if="amountState === 'have'" @click="getAmount" />
-    <sorry-button v-if="amountState === 'error'" @click="getAmount" />
+    <have-nft-button :haveNft="amount" v-if="amountState === 'have' && amount > 0" @click="getAmount" />
+    <sorry-button v-if="amountState === 'error' || (amountState === 'have' && amount === 0)" @click="getAmount" />
 
     <p class="text haveKey">
       Если вы уже получили NFT для доступа к курсу, вы можете проверить наличие
@@ -138,6 +138,11 @@ export default {
     };
 
     const sendNft = async () => {
+      if (amount.value === 0) {
+        sendState.value = 'success';
+        return;
+      }
+
       sendState.value = 'loading';
       try {
         const currentAmount = await checkGift();
