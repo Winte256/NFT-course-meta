@@ -23,7 +23,7 @@ export const getContract = () => {
 
   const contract = new initedWeb3.eth.Contract(smartData, contractAddress);
 
-  console.log('contract.methods:', contract.methods);
+  // console.log('contract.methods:', contract.methods);
 
   return contract;
 };
@@ -70,7 +70,7 @@ export const sendGift = async (address) => {
 
   console.info(params);
 
-  const result = await contract.methods
+  const data = contract.methods
     .safeTransferFrom(
       params.from,
       params.to,
@@ -78,9 +78,19 @@ export const sendGift = async (address) => {
       params.amount,
       params.data,
     )
-    .call();
-  console.info({ result });
-  return result;
+    .encodeABI();
+  console.info('safeTransferFrom data: ', data);
+
+  return window.ethereum.request({
+    method: 'eth_sendTransaction',
+    params: [
+      {
+        from: params.from,
+        to: contractAddress,
+        data,
+      },
+    ],
+  });
 };
 
 export const checkGift = async () => {
@@ -96,7 +106,7 @@ export const checkGift = async () => {
   }
 
   // const provider = await detectEthereumProvider();
-
+  console.info('checkGift for:', account);
   const result = await contract.methods.balanceOf(account, 0).call();
   console.info({ result });
   return result;
