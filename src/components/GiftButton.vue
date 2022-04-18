@@ -8,7 +8,9 @@
           alt="icon"
         />
       </span>
-      <span>Подарить</span>
+      <slot>
+        <span>Подарить</span>
+      </slot>
     </span>
   </button>
 </template>

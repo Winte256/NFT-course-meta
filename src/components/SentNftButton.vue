@@ -8,7 +8,9 @@
           alt="icon"
         />
       </span>
-      <span>NFT Отправлено. Осталось {{ leftNft }} NFT</span>
+      <slot>
+        <span>NFT Отправлено. Осталось {{ leftNft }} NFT</span>
+      </slot>
     </span>
   </button>
 </template>

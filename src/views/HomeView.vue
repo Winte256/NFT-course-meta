@@ -29,6 +29,10 @@
       ключа в своём кошельке.
     </p>
 
+    <GetCourseForm />
+    <div class="inputTitle">
+      Подарить NFT
+    </div>
     <label for="input">
       <input
         type="text"
@@ -90,6 +94,7 @@ import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 import GiftLoadButton from '@/components/GiftLoadButton.vue';
 // import { useRouter } from 'vue-router';
+import GetCourseForm from '@/components/GetCourseForm.vue';
 import {
 
   checkGift, sendGift,
@@ -106,6 +111,7 @@ export default {
     GiftButton,
     GiftLoadButton,
     SentNftButton,
+    GetCourseForm,
   },
 
   setup() {
@@ -187,6 +193,12 @@ export default {
 </script>
 
 <style lang="stylus">
+.inputTitle {
+  text-transform uppercase;
+  font-size 22px;
+  margin-bottom: 10px;
+  color: #ffd600;
+}
 .home {
   display: flex;
   flex-direction: column;

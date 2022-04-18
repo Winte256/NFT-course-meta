@@ -8,7 +8,9 @@
           alt="icon"
         />
       </span>
-      <span>Проверить</span>
+      <slot>
+        <span>Проверить</span>
+      </slot>
     </span>
   </button>
 </template>
