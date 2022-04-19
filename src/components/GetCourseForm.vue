@@ -1,5 +1,5 @@
 <template>
-  <div class="getCourseForm">
+  <form class="getCourseForm"  @submit.prevent="onSubmit">
     <div class="title">
       Получить курс
     </div>
@@ -9,13 +9,13 @@
         placeholder="ВВЕДИТЕ свой email адрес, по нему будет предоствлен доступ к курсу" />
     </label>
 
-    <GiftButton v-if="state === 'init' || state === 'error'" @click.prevent="onSubmit">
+    <GiftButton v-if="state === 'init' || state === 'error'">
       Получить
     </GiftButton>
     <GiftLoadButton v-if="state === 'loading'" @click.prevent.stop />
     <div v-if="state === 'success'">
-      <a href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya" target="_blank">
-        <SentNftButton  isStable>
+      <a href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya" target="_blank" @click.stop>
+        <SentNftButton isStable>
           <span>
             Перейти к курсу
           </span>
@@ -26,7 +26,7 @@
       Что то пошло не так. Попробуйте позже. Или обратитесь в поддержку
     </div>
 
-  </div>
+  </form>
 </template>
 
 <script>
