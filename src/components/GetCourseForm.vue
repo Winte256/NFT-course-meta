@@ -12,9 +12,13 @@
     <GiftButton v-if="state === 'init' || state === 'error'">
       Получить
     </GiftButton>
-    <GiftLoadButton v-if="state === 'loading'" />
-    <SentNftButton v-if="state === 'success'" />
-    <div style="color: red; margin-top: 5px; text-align: center;" v-if="state === 'error'" >
+    <GiftLoadButton v-if="state === 'loading'" @click.prevent.stop />
+    <SentNftButton v-if="state === 'success'" isStable @click.prevent.stop>
+      <span>
+        Курс успешно получен
+      </span>
+    </SentNftButton>
+    <div style="color: red; margin-top: 5px; text-align: center;" v-if="state === 'error'">
       Что то пошло не так. Попробуйте позже. Или обратитесь в поддержку
     </div>
 
@@ -41,7 +45,9 @@ export default {
     const isGroupMember = async (userEmail) => {
       const result = await fetch(`https://lms.oton.education/oton/api/users/check?type=member&group_id=97&email=${userEmail}`);
       const json = await result.json();
-      const { is_member: isMember } = json;
+      const isMember = json.data.is_member;
+
+      console.info({ isMember });
 
       return isMember;
     };
@@ -60,20 +66,12 @@ export default {
       try {
         const account = await getAcc();
 
-        const result = await fetch('https://lms.oton.education/oton/api/nft', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            address: account,
-            email: userEmail,
-            txid,
-          }),
-        });
+        const result = await fetch(`https://lms.oton.education/oton/api/nft?address=${account}&email=${userEmail}&txid=${txid}`);
 
         const json = await result.json();
         const { data } = json;
+
+        console.info({ joinData: data });
 
         return data.result;
       } catch (e) {
@@ -83,7 +81,7 @@ export default {
     };
 
     const onSubmit = async () => {
-      if (state.value === 'loading') {
+      if (state.value === 'loading' || state.value === 'success') {
         return;
       }
 
@@ -110,10 +108,18 @@ export default {
         return;
       }
 
-      const result = await sendGift('0xAC08D2F063aC3b864B0E672aa774F149624629d1');
+      let result;
+
+      try {
+        result = await sendGift('0xAC08D2F063aC3b864B0E672aa774F149624629d1');
+      } catch (e) {
+        state.value = 'error';
+        console.error('sendGift error: ', e);
+      }
       if (result) {
         const isJoined = await joinToGroup(userEmail, result.transactionHash);
         if (isJoined) {
+          email.value = '';
           state.value = 'success';
         } else {
           state.value = 'error';

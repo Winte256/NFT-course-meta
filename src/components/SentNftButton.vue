@@ -1,12 +1,8 @@
 <template>
-  <button class="button">
+  <button class="button" :class="{ isStable }">
     <span class="buttonBox">
       <span class="iconBox iconBox_nft">
-        <img
-          class="icon"
-          :src="require(`@/assets/images/magic.png`)"
-          alt="icon"
-        />
+        <img class="icon" :src="require(`@/assets/images/magic.png`)" alt="icon" />
       </span>
       <slot>
         <span>NFT Отправлено. Осталось {{ leftNft }} NFT</span>
@@ -19,6 +15,10 @@
 export default {
   name: 'SentNftButton',
   props: {
+    isStable: {
+      type: Boolean,
+      default: false,
+    },
     leftNft: {
       type: Number,
     },
@@ -45,6 +45,14 @@ export default {
 
   +mediaTablet() {
     min-width: 248px;
+  }
+
+  &.isStable {
+    cursor default
+    background-color: #ebdfff;
+    &:hover {
+      opacity 1
+    }
   }
 }
 

@@ -8,20 +8,21 @@ import { contractAddress, smartData } from './constants';
 export const getContract = () => {
   const toast = useToast();
   let initedWeb3;
+  let contract;
   console.log({ contractAddress });
   try {
     initedWeb3 = new window.Web3(
-      new window.Web3.providers.HttpProvider(
-        'https://data-seed-prebsc-2-s2.binance.org:8545/',
-      ),
+      // new window.Web3.providers.HttpProvider(
+      //   'https://data-seed-prebsc-2-s2.binance.org:8545/',
+      // ),
+      window.ethereum,
     );
+    contract = new initedWeb3.eth.Contract(smartData, contractAddress);
   } catch (error) {
     toast.error(
       'Что то пошло не так при инициализации контракта. Попробуйте обновить страницу',
     );
   }
-
-  const contract = new initedWeb3.eth.Contract(smartData, contractAddress);
 
   // console.log('contract.methods:', contract.methods);
 
@@ -68,9 +69,9 @@ export const sendGift = async (address) => {
     data: '0x0',
   };
 
-  console.info(params);
+  console.info('sendGift params: ', params);
 
-  const data = contract.methods
+  const result = await contract.methods
     .safeTransferFrom(
       params.from,
       params.to,
@@ -78,19 +79,24 @@ export const sendGift = async (address) => {
       params.amount,
       params.data,
     )
-    .encodeABI();
-  console.info('safeTransferFrom data: ', data);
+    .send({
+      from: params.from,
+    });
 
-  return window.ethereum.request({
-    method: 'eth_sendTransaction',
-    params: [
-      {
-        from: params.from,
-        to: contractAddress,
-        data,
-      },
-    ],
-  });
+  console.info('buy result: ', result);
+
+  return result;
+
+  // return window.ethereum.request({
+  //   method: 'eth_sendTransaction',
+  //   params: [
+  //     {
+  //       from: params.from,
+  //       to: contractAddress,
+  //       data,
+  //     },
+  //   ],
+  // });
 };
 
 export const checkGift = async () => {
