@@ -1,32 +1,40 @@
 <template>
-  <form class="getCourseForm"  @submit.prevent="onSubmit">
+
+  <div class="getCourseForm">
     <div class="title">
       Получить курс
     </div>
 
-    <label for="email">
-      <input type="email" required :class="['input', { input_notIPhone: platform !== 'iPhone' }]" id="email" v-model="email"
-        placeholder="ВВЕДИТЕ свой email адрес, по нему будет предоствлен доступ к курсу" />
-    </label>
+    <form @submit.prevent="onSubmit" class="form">
+      <label for="email">
+        <input type="email" required :class="['input', { input_notIPhone: platform !== 'iPhone' }]" id="email"
+          v-model="email" placeholder="ВВЕДИТЕ свой email адрес, по нему будет предоствлен доступ к курсу" />
+      </label>
 
-    <GiftButton v-if="state === 'init' || state === 'error'">
-      Получить
-    </GiftButton>
-    <GiftLoadButton v-if="state === 'loading'" @click.prevent.stop />
-    <div v-if="state === 'success'">
-      <a href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya" target="_blank" @click.stop>
-        <SentNftButton isStable>
-          <span>
-            Перейти к курсу
-          </span>
-        </SentNftButton>
-      </a>
-    </div>
+      <GiftButton v-if="state === 'init' || state === 'error'">
+        Получить
+      </GiftButton>
+    </form>
+
+    <GiftLoadButton v-if="state === 'loading'" />
+
+    <a
+      v-if="state === 'success'"
+      href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya"
+      target="_blank"
+    >
+      <SentNftButton isStable>
+        <span>
+          Перейти к курсу
+        </span>
+      </SentNftButton>
+    </a>
+
     <div style="color: red; margin-top: 5px; text-align: center;" v-if="state === 'error'">
       Что то пошло не так. Попробуйте позже. Или обратитесь в поддержку
     </div>
 
-  </form>
+  </div>
 </template>
 
 <script>
@@ -156,5 +164,10 @@ export default {
   justify-content center
   margin-bottom 30px
 }
+.form {
 
+  display flex
+  flex-wrap:wrap;
+  justify-content center
+}
 </style>
