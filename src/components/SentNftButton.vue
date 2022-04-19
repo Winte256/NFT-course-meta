@@ -48,11 +48,8 @@ export default {
   }
 
   &.isStable {
-    cursor default
     background-color: #ebdfff;
-    &:hover {
-      opacity 1
-    }
+
   }
 }
 
