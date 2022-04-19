@@ -9,11 +9,11 @@
         placeholder="ВВЕДИТЕ свой email адрес, по нему будет предоствлен доступ к курсу" />
     </label>
 
-    <GiftButton v-if="state === 'in1it' || state === 'error'" @submit.prevent="onSubmit">
+    <GiftButton v-if="state === 'init' || state === 'error'" @submit.prevent="onSubmit">
       Получить
     </GiftButton>
     <GiftLoadButton v-if="state === 'loading'" @click.prevent.stop />
-    <div v-if="state === 'success' || true">
+    <div v-if="state === 'success'">
       <a href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya" target="_blank">
         <SentNftButton  isStable>
           <span>
