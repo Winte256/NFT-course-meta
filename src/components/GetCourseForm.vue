@@ -9,7 +9,7 @@
         placeholder="ВВЕДИТЕ свой email адрес, по нему будет предоствлен доступ к курсу" />
     </label>
 
-    <GiftButton v-if="state === 'init' || state === 'error'" @submit.prevent="onSubmit">
+    <GiftButton v-if="state === 'init' || state === 'error'" @click.prevent="onSubmit">
       Получить
     </GiftButton>
     <GiftLoadButton v-if="state === 'loading'" @click.prevent.stop />
