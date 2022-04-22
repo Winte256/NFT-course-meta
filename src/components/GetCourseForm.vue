@@ -18,7 +18,7 @@
 
     <GiftLoadButton v-if="state === 'loading'" />
 
-    <div v-if="state === 'success' || true" class="successWrapper">
+    <div v-if="state === 'success'" class="successWrapper">
       <a href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya" target="_blank">
         <SentNftButton isStable>
           <span>
