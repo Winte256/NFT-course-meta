@@ -18,17 +18,20 @@
 
     <GiftLoadButton v-if="state === 'loading'" />
 
-    <a
-      v-if="state === 'success'"
-      href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya"
-      target="_blank"
-    >
-      <SentNftButton isStable>
-        <span>
-          Перейти к курсу
-        </span>
-      </SentNftButton>
-    </a>
+    <div v-if="state === 'success' || true" class="successWrapper">
+      <a href="https://lms.oton.education/training/view/CHto-takoe-metavselennaya" target="_blank">
+        <SentNftButton isStable>
+          <span>
+            Перейти на курс
+          </span>
+        </SentNftButton>
+      </a>
+      <p class="text haveKey">
+        Спасибо, мы получили NFT-токен для доступа к курсу «Что такое метавселенная, и какие возможности она нам дает».
+        Нажмите на кнопку «Перейти на курс», авторизуйтесь на платформе и присоединяйтесь к участникам курса в закрытом
+        Telegram-чате.
+      </p>
+    </div>
 
     <div style="color: red; margin-top: 5px; text-align: center;" v-if="state === 'error'">
       Что то пошло не так. Попробуйте позже. Или обратитесь в поддержку
@@ -165,9 +168,13 @@ export default {
   margin-bottom 30px
 }
 .form {
-
   display flex
   flex-wrap:wrap;
   justify-content center
+}
+.successWrapper {
+  display flex
+  flex-direction: column
+  align-items center
 }
 </style>
