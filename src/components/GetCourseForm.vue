@@ -8,7 +8,7 @@
     <form @submit.prevent="onSubmit" class="form">
       <label for="email">
         <input type="email" required :class="['input', { input_notIPhone: platform !== 'iPhone' }]" id="email"
-          v-model="email" placeholder="ВВЕДИТЕ свой email адрес, по нему будет предоствлен доступ к курсу" />
+          v-model="email" placeholder="ВВЕДИТЕ свой email адрес, по нему будет предоставлен доступ к курсу" />
       </label>
 
       <GiftButton v-if="state === 'init' || state === 'error'">
