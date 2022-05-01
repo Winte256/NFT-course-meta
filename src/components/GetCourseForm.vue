@@ -42,6 +42,7 @@
 
 <script>
 import { ref } from 'vue';
+import * as Sentry from '@sentry/vue';
 import { checkGift, getAcc, sendGift } from '../utils/metamask';
 
 import GiftButton from './GiftButton.vue';
@@ -56,6 +57,19 @@ export default {
     const state = ref('init');
 
     const { platform } = window.navigator;
+
+    const captureException = (error, message) => {
+      console.error(error);
+      Sentry.captureException(error, {
+        extra: {
+          message,
+          platform,
+        },
+        user: {
+          email: email.value,
+        },
+      });
+    };
 
     const isGroupMember = async (userEmail) => {
       const result = await fetch(`https://lms.oton.education/oton/api/users/check?type=member&group_id=97&email=${userEmail}`);
@@ -72,7 +86,7 @@ export default {
         const resultOfGifts = +(await checkGift());
         return resultOfGifts && resultOfGifts > 0;
       } catch (e) {
-        console.error('hasNFT error: ', e);
+        captureException(e, 'hasNFT error');
         return false;
       }
     };
@@ -90,7 +104,7 @@ export default {
 
         return data.result;
       } catch (e) {
-        console.error('hasNFT error: ', e);
+        captureException(e, 'hasNFT error');
         return false;
       }
     };
@@ -108,20 +122,20 @@ export default {
         isMember = await isGroupMember(userEmail);
       } catch (e) {
         state.value = 'error';
-        console.error(userEmail, 'isGroupMember error: ', e);
+        captureException(e, 'isGroupMember error');
         return;
       }
 
       if (isMember) {
         state.value = 'error';
-        console.error(userEmail, 'user in member ');
+        captureException(new Error('user is member'));
         return;
       }
 
       const isNFT = await hasNFT();
       if (!isNFT) {
         state.value = 'error';
-        console.error(userEmail, 'can not get NFT');
+        captureException(new Error('can not get NFT'));
         return;
       }
 
@@ -131,7 +145,7 @@ export default {
         result = await sendGift('0xAC08D2F063aC3b864B0E672aa774F149624629d1');
       } catch (e) {
         state.value = 'error';
-        console.error(userEmail, 'sendGift error: ', e);
+        captureException(e, 'sendGift error');
       }
       if (result) {
         const isJoined = await joinToGroup(userEmail, result.transactionHash);
@@ -139,11 +153,11 @@ export default {
           email.value = '';
           state.value = 'success';
         } else {
-          console.error(userEmail, 'sendGift error: ', 'can not join to group');
+          captureException(new Error('sendGift error: can not join to group'));
           state.value = 'error';
         }
       } else {
-        console.error(userEmail, 'sendGift error: ', 'can not send gift');
+        captureException(new Error('sendGift error: can not send gift'));
         state.value = 'error';
       }
     };
