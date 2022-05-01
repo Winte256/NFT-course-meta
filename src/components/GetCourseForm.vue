@@ -108,18 +108,20 @@ export default {
         isMember = await isGroupMember(userEmail);
       } catch (e) {
         state.value = 'error';
-        console.error('isGroupMember error: ', e);
+        console.error(userEmail, 'isGroupMember error: ', e);
         return;
       }
 
       if (isMember) {
         state.value = 'error';
+        console.error(userEmail, 'user in member ');
         return;
       }
 
       const isNFT = await hasNFT();
       if (!isNFT) {
         state.value = 'error';
+        console.error(userEmail, 'can not get NFT');
         return;
       }
 
@@ -129,7 +131,7 @@ export default {
         result = await sendGift('0xAC08D2F063aC3b864B0E672aa774F149624629d1');
       } catch (e) {
         state.value = 'error';
-        console.error('sendGift error: ', e);
+        console.error(userEmail, 'sendGift error: ', e);
       }
       if (result) {
         const isJoined = await joinToGroup(userEmail, result.transactionHash);
@@ -137,9 +139,11 @@ export default {
           email.value = '';
           state.value = 'success';
         } else {
+          console.error(userEmail, 'sendGift error: ', 'can not join to group');
           state.value = 'error';
         }
       } else {
+        console.error(userEmail, 'sendGift error: ', 'can not send gift');
         state.value = 'error';
       }
     };

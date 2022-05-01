@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
+    "@sentry/tracing": "^6.19.7",
+    "@sentry/vue": "^6.19.7",
     "@vue/reactivity": "^3.2.31",
     "core-js": "^3.8.3",
     "js-cookie": "^3.0.1",
